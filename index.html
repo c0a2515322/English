@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英単語学習</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card-container {
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .card-container.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.75rem;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 text-gray-800 flex items-center justify-center min-h-screen p-4">
+
+    <div id="app-container" class="w-full max-w-md mx-auto">
+
+        <div id="settings-screen" class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+            <h1 class="text-2xl font-bold text-center mb-6">英単語学習</h1>
+            <div class="space-y-4">
+                <div>
+                    <label for="start-range" class="block text-sm font-medium text-gray-700">学習範囲 (開始)</label>
+                    <input type="number" id="start-range" value="1" min="1"
+                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="end-range" class="block text-sm font-medium text-gray-700">学習範囲 (終了)</label>
+                    <input type="number" id="end-range" value="35" min="1"
+                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-gray-700">順番をシャッフルする</span>
+                    <label for="shuffle-toggle" class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="shuffle-toggle" class="sr-only peer" checked>
+                        <div
+                            class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-indigo-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600">
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div class="mt-8">
+                <button id="start-btn"
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    学習を開始
+                </button>
+            </div>
+            <p id="error-message" class="text-red-500 text-sm mt-4 text-center"></p>
+        </div>
+
+        <div id="game-screen" class="hidden">
+            <div class="flex justify-between items-center mb-4">
+                <div id="progress" class="text-sm font-medium text-gray-600"></div>
+                <button id="back-to-settings-btn" class="text-sm text-indigo-600 hover:underline">設定に戻る</button>
+            </div>
+
+            <div id="card-container" class="card-container h-64 md:h-80">
+                <div id="card-inner" class="card-inner">
+                    <div id="card-front" class="card-front bg-white shadow-xl">
+                        <p id="definition" class="text-xl md:text-2xl font-semibold p-4 text-center"></p>
+                    </div>
+                    <div id="card-back" class="card-back bg-indigo-500 text-white shadow-xl">
+                        <p id="word" class="text-3xl md:text-4xl font-bold p-4 text-center"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 space-y-4">
+                <div class="relative">
+                    <input type="text" id="answer-input" placeholder="英単語を入力" autocomplete="off" autocorrect="off"
+                        autocapitalize="off" spellcheck="false"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-300">
+                    <p id="feedback-message" class="absolute right-4 top-1/2 -translate-y-1/2 font-bold text-lg"></p>
+                </div>
+                <button id="check-btn"
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">回答する</button>
+                <button id="next-btn"
+                    class="hidden w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">次へ</button>
+            </div>
+        </div>
+
+        <div id="results-screen" class="hidden bg-white p-6 md:p-8 rounded-xl shadow-lg">
+            <h2 class="text-2xl font-bold text-center mb-4">学習結果</h2>
+            <div class="flex justify-around text-center my-6">
+                <div>
+                    <p class="text-3xl font-bold text-emerald-500" id="correct-count"></p>
+                    <p class="text-sm text-gray-600">正解</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-bold text-rose-500" id="incorrect-count"></p>
+                    <p class="text-sm text-gray-600">不正解</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-bold text-indigo-600" id="accuracy-rate"></p>
+                    <p class="text-sm text-gray-600">正解率</p>
+                </div>
+            </div>
+            <div id="mistakes-container" class="mt-6">
+                <h3 class="text-lg font-semibold mb-2">間違えた単語</h3>
+                <div id="mistakes-list" class="max-h-60 overflow-y-auto space-y-3 bg-gray-50 p-3 rounded-lg">
+
+                </div>
+            </div>
+            <div class="mt-8 space-y-3">
+                <button id="retry-btn"
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">同じ範囲で再挑戦</button>
+                <button id="retry-mistakes-btn"
+                    class="hidden w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">間違えた問題だけ再挑戦</button>
+                <button id="new-game-btn"
+                    class="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">新しい範囲で学習</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="words.js"></script>
+    <script>
+        const settingsScreen = document.getElementById('settings-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const resultsScreen = document.getElementById('results-screen');
+        const startBtn = document.getElementById('start-btn');
+        const startRangeInput = document.getElementById('start-range');
+        const endRangeInput = document.getElementById('end-range');
+        const shuffleToggle = document.getElementById('shuffle-toggle');
+        const errorMessage = document.getElementById('error-message');
+        const cardContainer = document.getElementById('card-container');
+        const wordEl = document.getElementById('word');
+        const definitionEl = document.getElementById('definition');
+        const progressEl = document.getElementById('progress');
+        const backToSettingsBtn = document.getElementById('back-to-settings-btn');
+        const correctCountEl = document.getElementById('correct-count');
+        const incorrectCountEl = document.getElementById('incorrect-count');
+        const accuracyRateEl = document.getElementById('accuracy-rate');
+        const mistakesListEl = document.getElementById('mistakes-list');
+        const retryBtn = document.getElementById('retry-btn');
+        const newGameBtn = document.getElementById('new-game-btn');
+        const answerInput = document.getElementById('answer-input');
+        const checkBtn = document.getElementById('check-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const retryMistakesBtn = document.getElementById('retry-mistakes-btn');
+
+        let currentWords = [];
+        let currentIndex = 0;
+        let results = [];
+        let isShuffled = true;
+
+        function initializeApp() {
+            endRangeInput.max = allWords.length;
+            endRangeInput.value = allWords.length;
+            startRangeInput.max = allWords.length;
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startGame() {
+            const start = parseInt(startRangeInput.value);
+            const end = parseInt(endRangeInput.value);
+            isShuffled = shuffleToggle.checked;
+
+            errorMessage.textContent = '';
+            if (isNaN(start) || isNaN(end) || start < 1 || end > allWords.length || start > end) {
+                errorMessage.textContent = '有効な範囲を入力してください。';
+                return;
+            }
+
+            let selectedWords = allWords.slice(start - 1, end);
+            currentWords = isShuffled ? shuffleArray([...selectedWords]) : selectedWords;
+            currentIndex = 0;
+            results = [];
+
+            settingsScreen.classList.add('hidden');
+            resultsScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+
+            displayCurrentWord();
+        }
+
+        function displayCurrentWord() {
+            if (currentIndex >= currentWords.length) {
+                showResults();
+                return;
+            }
+
+            cardContainer.classList.remove('flipped');
+
+            setTimeout(() => {
+                const current = currentWords[currentIndex];
+                definitionEl.textContent = current.definition;
+                wordEl.textContent = current.word;
+                progressEl.textContent = `${currentIndex + 1} / ${currentWords.length}`;
+
+
+                answerInput.value = '';
+                answerInput.disabled = false;
+                answerInput.className = 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-300';
+                feedbackMessage.textContent = '';
+                checkBtn.classList.remove('hidden');
+                nextBtn.classList.add('hidden');
+                answerInput.focus();
+            }, 300);
+        }
+
+        function checkAnswer() {
+            const userAnswer = answerInput.value.trim();
+            const correctAnswer = currentWords[currentIndex].word;
+            const isCorrect = userAnswer === correctAnswer;
+
+            answerInput.disabled = true;
+            checkBtn.classList.add('hidden');
+            nextBtn.classList.remove('hidden');
+
+            if (isCorrect) {
+                answerInput.className = 'w-full px-4 py-3 border border-emerald-500 bg-emerald-50 rounded-lg focus:outline-none ring-2 ring-emerald-500 transition-colors duration-300';
+                feedbackMessage.textContent = '正解！';
+                feedbackMessage.className = 'absolute right-4 top-1/2 -translate-y-1/2 font-bold text-lg text-emerald-500';
+            } else {
+                answerInput.className = 'w-full px-4 py-3 border border-rose-500 bg-rose-50 rounded-lg focus:outline-none ring-2 ring-rose-500 transition-colors duration-300';
+                feedbackMessage.textContent = '不正解';
+                feedbackMessage.className = 'absolute right-4 top-1/2 -translate-y-1/2 font-bold text-lg text-rose-500';
+            }
+
+            cardContainer.classList.add('flipped');
+            results.push({ ...currentWords[currentIndex], correct: isCorrect, userAnswer: userAnswer });
+            nextBtn.focus();
+        }
+
+        function goToNext() {
+            currentIndex++;
+            displayCurrentWord();
+        }
+
+        function retryMistakes() {
+            const mistakes = results.filter(r => !r.correct);
+            if (mistakes.length === 0) return;
+
+
+            const mistakeWords = mistakes.map(({ word, definition }) => ({ word, definition }));
+
+            currentWords = isShuffled ? shuffleArray(mistakeWords) : mistakeWords;
+            currentIndex = 0;
+            results = [];
+
+            resultsScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            displayCurrentWord();
+        }
+
+        function showResults() {
+            gameScreen.classList.add('hidden');
+            resultsScreen.classList.remove('hidden');
+
+            const correct = results.filter(r => r.correct).length;
+            const incorrect = results.length - correct;
+            const accuracy = results.length > 0 ? Math.round((correct / results.length) * 100) : 0;
+
+            correctCountEl.textContent = correct;
+            incorrectCountEl.textContent = incorrect;
+            accuracyRateEl.textContent = `${accuracy}%`;
+
+            mistakesListEl.innerHTML = '';
+            const mistakes = results.filter(r => !r.correct);
+
+            if (mistakes.length === 0) {
+                mistakesListEl.innerHTML = '<p class="text-gray-500 text-sm">間違えた単語はありません。素晴らしい！</p>';
+                retryMistakesBtn.classList.add('hidden');
+            } else {
+                retryMistakesBtn.classList.remove('hidden');
+                mistakes.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'bg-white p-4 rounded-lg border border-gray-200 space-y-2';
+                    div.innerHTML = `
+                        <div class="border-b border-gray-100 pb-2">
+                            <p class="font-semibold text-gray-800 text-lg">${item.definition}</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <div>
+                                <p class="font-medium text-emerald-600">${item.word}</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-rose-600">${item.userAnswer || '(未入力)'}</p>
+                            </div>
+                        </div>
+                    `;
+                    mistakesListEl.appendChild(div);
+                });
+            }
+        }
+
+        function goBackToSettings() {
+            gameScreen.classList.add('hidden');
+            resultsScreen.classList.add('hidden');
+            settingsScreen.classList.remove('hidden');
+        }
+
+        startBtn.addEventListener('click', startGame);
+        checkBtn.addEventListener('click', checkAnswer);
+        nextBtn.addEventListener('click', goToNext);
+        answerInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !checkBtn.classList.contains('hidden')) {
+                e.preventDefault();
+                checkAnswer();
+            }
+        });
+        document.body.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !nextBtn.classList.contains('hidden')) {
+                e.preventDefault();
+                goToNext();
+            }
+        });
+
+        backToSettingsBtn.addEventListener('click', goBackToSettings);
+        retryBtn.addEventListener('click', startGame);
+        retryMistakesBtn.addEventListener('click', retryMistakes);
+        newGameBtn.addEventListener('click', goBackToSettings);
+
+        initializeApp();
+    </script>
+</body>
+
+</html>
