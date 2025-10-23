@@ -12,41 +12,80 @@
             --app-height: 100%;
         }
         
-        body {
+        * {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            margin: 0;
+            padding: 0;
             font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
-        /* モバイル対応: キーボード表示時のレイアウト調整 */
-        @supports (-webkit-touch-callout: none) {
-            .mobile-viewport {
-                height: 100vh;
-                height: calc(var(--vh, 1vh) * 100);
-                height: -webkit-fill-available;
-            }
+        /* ビューポート制御の強化 */
+        .mobile-viewport {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh; /* 動的ビューポート高さ */
+            overflow: hidden;
         }
         
         .app-container {
-            min-height: 100vh;
-            min-height: calc(var(--vh, 1vh) * 100);
-            min-height: -webkit-fill-available;
-            height: var(--app-height);
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
         
-        /* ゲーム画面でのスクロール制御 */
+        .scroll-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        /* ゲーム画面の完全な高さ制御 */
         .game-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100vh;
-            height: calc(var(--vh, 1vh) * 100);
-            height: -webkit-fill-available;
+            height: 100dvh;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            background-color: #f3f4f6;
         }
         
         .game-content {
             flex: 1;
             display: flex;
             flex-direction: column;
+            width: 100%;
+            max-width: 28rem;
+            margin: 0 auto;
+            padding: 1rem;
             overflow: hidden;
+            position: relative;
+        }
+        
+        .game-header {
+            flex-shrink: 0;
+            margin-bottom: 1rem;
         }
         
         .card-area {
@@ -54,11 +93,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 160px;
+            min-height: 120px;
+            max-height: 200px;
+            margin-bottom: 1rem;
         }
 
         .card-container {
             perspective: 1000px;
+            width: 100%;
+            height: 100%;
         }
 
         .card-inner {
@@ -93,33 +136,87 @@
         /* 入力エリアの固定化 */
         .input-area {
             flex-shrink: 0;
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-        
-        /* iOSでのバウンススクロール制御 */
-        body {
-            position: fixed;
-            overflow: hidden;
             width: 100%;
-            height: 100vh;
-            height: calc(var(--vh, 1vh) * 100);
-            height: -webkit-fill-available;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
         }
         
-        .scroll-container {
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            height: 100%;
+        /* フォーカス時のズーム防止 */
+        input[type="text"], 
+        input[type="number"], 
+        select, 
+        textarea {
+            font-size: 16px !important;
+            -webkit-appearance: none;
+            appearance: none;
         }
         
-        /* フォーカス時のズーム防止 (iOS) */
-        input[type="text"], input[type="number"] {
-            font-size: 16px;
+        /* 設定画面とリザルト画面 */
+        .settings-screen,
+        .results-screen {
+            width: 100%;
+            max-width: 28rem;
         }
         
-        @media screen and (max-width: 480px) {
-            input[type="text"], input[type="number"] {
-                font-size: 16px;
+        /* スクロール完全無効化 */
+        body {
+            touch-action: none;
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: none;
+        }
+        
+        /* キーボード表示時の調整 */
+        /* キーボード表示時の調整 */
+        body.keyboard-visible .card-area {
+            min-height: 60px !important;
+            max-height: 80px !important;
+        }
+        
+        body.keyboard-visible .card-front p,
+        body.keyboard-visible .card-back p {
+            font-size: 0.875rem !important;
+            padding: 0.5rem !important;
+        }
+        
+        body.keyboard-visible .game-content {
+            padding: 0.5rem !important;
+        }
+        
+        body.keyboard-visible .game-header {
+            margin-bottom: 0.5rem !important;
+        }
+        
+        body.keyboard-visible .input-area {
+            margin-top: 0.5rem !important;
+        }
+        
+        @media screen and (max-height: 600px) {
+            .card-area {
+                min-height: 80px;
+                max-height: 120px;
+            }
+            
+            .game-content {
+                padding: 0.5rem;
+            }
+            
+            .input-area {
+                margin-top: 0.5rem;
+            }
+            
+            .card-front p,
+            .card-back p {
+                font-size: 1rem !important;
+            }
+        }
+        
+        @media screen and (max-height: 500px) {
+            .card-area {
+                min-height: 60px;
+                max-height: 100px;
+            }
+            
+            .game-header {
+                margin-bottom: 0.5rem;
             }
         }
     </style>
@@ -131,7 +228,7 @@
         <div class="scroll-container flex items-center justify-center min-h-full p-4">
             <div class="w-full max-w-md mx-auto">
 
-        <div id="settings-screen" class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+        <div id="settings-screen" class="settings-screen bg-white p-6 md:p-8 rounded-xl shadow-lg".>
             <h1 class="text-2xl font-bold text-center mb-6">英単語学習</h1>
             <div class="space-y-4">
                 <div>
@@ -164,31 +261,31 @@
         </div>
 
         <div id="game-screen" class="hidden game-container">
-            <div class="game-content p-4">
-                <div class="flex justify-between items-center mb-4 flex-shrink-0">
+            <div class="game-content">
+                <div class="game-header flex justify-between items-center">
                     <div id="progress" class="text-sm font-medium text-gray-600"></div>
                     <button id="back-to-settings-btn" class="text-sm text-indigo-600 hover:underline">設定に戻る</button>
                 </div>
 
                 <div class="card-area">
-                    <div id="card-container" class="card-container w-full h-48 md:h-64">
+                    <div id="card-container" class="card-container">
                         <div id="card-inner" class="card-inner">
                             <div id="card-front" class="card-front bg-white shadow-xl">
-                                <p id="definition" class="text-lg md:text-xl font-semibold p-4 text-center"></p>
+                                <p id="definition" class="text-base md:text-lg font-semibold p-3 text-center"></p>
                             </div>
                             <div id="card-back" class="card-back bg-indigo-500 text-white shadow-xl">
-                                <p id="word" class="text-2xl md:text-3xl font-bold p-4 text-center"></p>
+                                <p id="word" class="text-xl md:text-2xl font-bold p-3 text-center"></p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="input-area mt-4 space-y-3">
+                <div class="input-area space-y-3">
                     <div class="relative">
                         <input type="text" id="answer-input" placeholder="英単語を入力" autocomplete="off" autocorrect="off"
                             autocapitalize="off" spellcheck="false"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-300">
-                        <p id="feedback-message" class="absolute right-4 top-1/2 -translate-y-1/2 font-bold text-lg"></p>
+                        <p id="feedback-message" class="absolute right-4 top-1/2 -translate-y-1/2 font-bold text-sm"></p>
                     </div>
                     <button id="check-btn"
                         class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">回答する</button>
@@ -198,7 +295,7 @@
             </div>
         </div>
 
-        <div id="results-screen" class="hidden bg-white p-6 md:p-8 rounded-xl shadow-lg">
+        <div id="results-screen" class="hidden results-screen bg-white p-6 md:p-8 rounded-xl shadow-lg">
             <h2 class="text-2xl font-bold text-center mb-4">学習結果</h2>
             <div class="flex justify-around text-center my-6">
                 <div>
@@ -264,27 +361,87 @@
         let results = [];
         let isShuffled = true;
 
-        // モバイルキーボード対応
-        function handleViewportChange() {
-            // 100vh を再計算
-            let vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        // スクロール完全無効化
+        function preventScroll(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
         }
 
-        // 初回とリサイズ時にビューポートの高さを調整
-        handleViewportChange();
+        function disableScroll() {
+            document.addEventListener('wheel', preventScroll, { passive: false });
+            document.addEventListener('touchmove', preventScroll, { passive: false });
+            document.addEventListener('scroll', preventScroll, { passive: false });
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+        }
+
+        // ビューポート高さの動的調整
+        function setViewportHeight() {
+            // 100vh の代わりに実際のビューポート高さを使用
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+            
+            // 各コンテナの高さを明示的に設定
+            const appContainer = document.getElementById('app-container');
+            const gameScreen = document.getElementById('game-screen');
+            
+            if (appContainer) {
+                appContainer.style.height = `${window.innerHeight}px`;
+            }
+            if (gameScreen && !gameScreen.classList.contains('hidden')) {
+                gameScreen.style.height = `${window.innerHeight}px`;
+            }
+        }
+
+        // キーボード表示検知と対応
+        let initialViewportHeight = window.innerHeight;
+        
+        function handleViewportChange() {
+            const currentHeight = window.innerHeight;
+            const heightDifference = initialViewportHeight - currentHeight;
+            
+            // キーボードが表示されている場合（高さが大幅に減少）
+            if (heightDifference > 150) {
+                document.body.classList.add('keyboard-visible');
+                // ゲーム画面の場合、さらに小さく調整
+                const gameScreen = document.getElementById('game-screen');
+                if (gameScreen && !gameScreen.classList.contains('hidden')) {
+                    gameScreen.style.height = `${currentHeight}px`;
+                }
+            } else {
+                document.body.classList.remove('keyboard-visible');
+            }
+            
+            setViewportHeight();
+        }
+
+        // イベントリスナーの設定
         window.addEventListener('resize', handleViewportChange);
         window.addEventListener('orientationchange', () => {
-            setTimeout(handleViewportChange, 100);
+            setTimeout(() => {
+                initialViewportHeight = window.innerHeight;
+                handleViewportChange();
+            }, 100);
         });
 
-        // iOS Safariでのアドレスバー対応
-        function setAppHeight() {
-            const doc = document.documentElement;
-            doc.style.setProperty('--app-height', `${window.innerHeight}px`);
-        }
-        window.addEventListener('resize', setAppHeight);
-        setAppHeight();
+        // 初期化
+        disableScroll();
+        setViewportHeight();
+        
+        // タッチデバイスでのスクロール防止を強化
+        document.addEventListener('touchstart', (e) => {
+            // 入力フィールド以外でのタッチでスクロールを防止
+            if (!e.target.matches('input, button, select, textarea')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('touchend', (e) => {
+            if (!e.target.matches('input, button, select, textarea')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
 
         function initializeApp() {
             endRangeInput.max = allWords.length;
