@@ -11,12 +11,13 @@
         :root {
             --app-height: 100%;
         }
-        
+
         * {
             box-sizing: border-box;
         }
-        
-        html, body {
+
+        html,
+        body {
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
@@ -28,24 +29,23 @@
             user-select: none;
         }
 
-        /* ビューポート制御の強化 */
         .mobile-viewport {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
-            height: 100dvh; /* 動的ビューポート高さ */
+            height: 100dvh;
             overflow: hidden;
         }
-        
+
         .app-container {
             position: relative;
             width: 100%;
             height: 100%;
             overflow: hidden;
         }
-        
+
         .scroll-container {
             position: relative;
             width: 100%;
@@ -56,8 +56,7 @@
             justify-content: center;
             padding: 1rem;
         }
-        
-        /* ゲーム画面の完全な高さ制御 */
+
         .game-container {
             position: fixed;
             top: 0;
@@ -70,7 +69,7 @@
             flex-direction: column;
             background-color: #f3f4f6;
         }
-        
+
         .game-content {
             flex: 1;
             display: flex;
@@ -82,12 +81,12 @@
             overflow: hidden;
             position: relative;
         }
-        
+
         .game-header {
             flex-shrink: 0;
             margin-bottom: 1rem;
         }
-        
+
         .card-area {
             flex: 1;
             display: flex;
@@ -132,89 +131,83 @@
         .card-back {
             transform: rotateY(180deg);
         }
-        
-        /* 入力エリアの固定化 */
+
         .input-area {
             flex-shrink: 0;
             width: 100%;
             padding-bottom: env(safe-area-inset-bottom, 0px);
         }
-        
-        /* フォーカス時のズーム防止 */
-        input[type="text"], 
-        input[type="number"], 
-        select, 
+
+        input[type="text"],
+        input[type="number"],
+        select,
         textarea {
             font-size: 16px !important;
             -webkit-appearance: none;
             appearance: none;
         }
-        
-        /* 設定画面とリザルト画面 */
+
         .settings-screen,
         .results-screen {
             width: 100%;
             max-width: 28rem;
         }
-        
-        /* スクロール完全無効化 */
+
         body {
             touch-action: none;
             overscroll-behavior: none;
             -webkit-overflow-scrolling: none;
         }
-        
-        /* キーボード表示時の調整 */
-        /* キーボード表示時の調整 */
+
         body.keyboard-visible .card-area {
             min-height: 60px !important;
             max-height: 80px !important;
         }
-        
+
         body.keyboard-visible .card-front p,
         body.keyboard-visible .card-back p {
             font-size: 0.875rem !important;
             padding: 0.5rem !important;
         }
-        
+
         body.keyboard-visible .game-content {
             padding: 0.5rem !important;
         }
-        
+
         body.keyboard-visible .game-header {
             margin-bottom: 0.5rem !important;
         }
-        
+
         body.keyboard-visible .input-area {
             margin-top: 0.5rem !important;
         }
-        
+
         @media screen and (max-height: 600px) {
             .card-area {
                 min-height: 80px;
                 max-height: 120px;
             }
-            
+
             .game-content {
                 padding: 0.5rem;
             }
-            
+
             .input-area {
                 margin-top: 0.5rem;
             }
-            
+
             .card-front p,
             .card-back p {
                 font-size: 1rem !important;
             }
         }
-        
+
         @media screen and (max-height: 500px) {
             .card-area {
                 min-height: 60px;
                 max-height: 100px;
             }
-            
+
             .game-header {
                 margin-bottom: 0.5rem;
             }
@@ -228,352 +221,344 @@
         <div class="scroll-container flex items-center justify-center min-h-full p-4">
             <div class="w-full max-w-md mx-auto">
 
-        <div id="settings-screen" class="settings-screen bg-white p-6 md:p-8 rounded-xl shadow-lg".>
-            <h1 class="text-2xl font-bold text-center mb-6">英単語学習</h1>
-            <div class="space-y-4">
-                <div>
-                    <label for="start-range" class="block text-sm font-medium text-gray-700">学習範囲 (開始)</label>
-                    <input type="number" id="start-range" value="1" min="1"
-                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                </div>
-                <div>
-                    <label for="end-range" class="block text-sm font-medium text-gray-700">学習範囲 (終了)</label>
-                    <input type="number" id="end-range" value="35" min="1"
-                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                </div>
-                <div class="flex items-center justify-between">
-                    <span class="text-sm font-medium text-gray-700">順番をシャッフルする</span>
-                    <label for="shuffle-toggle" class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="shuffle-toggle" class="sr-only peer">
-                        <div
-                            class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-indigo-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600">
+                <div id="settings-screen" class="settings-screen bg-white p-6 md:p-8 rounded-xl shadow-lg" .>
+                    <h1 class="text-2xl font-bold text-center mb-6">英単語学習</h1>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="start-range" class="block text-sm font-medium text-gray-700">学習範囲 (開始)</label>
+                            <input type="number" id="start-range" value="1" min="1"
+                                class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                         </div>
-                    </label>
+                        <div>
+                            <label for="end-range" class="block text-sm font-medium text-gray-700">学習範囲 (終了)</label>
+                            <input type="number" id="end-range" value="35" min="1"
+                                class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-700">順番をシャッフルする</span>
+                            <label for="shuffle-toggle" class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="shuffle-toggle" class="sr-only peer">
+                                <div
+                                    class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-indigo-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <button id="start-btn"
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            学習を開始
+                        </button>
+                    </div>
+                    <p id="error-message" class="text-red-500 text-sm mt-4 text-center"></p>
                 </div>
-            </div>
-            <div class="mt-8">
-                <button id="start-btn"
-                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    学習を開始
-                </button>
-            </div>
-            <p id="error-message" class="text-red-500 text-sm mt-4 text-center"></p>
-        </div>
 
-        <div id="game-screen" class="hidden game-container">
-            <div class="game-content">
-                <div class="game-header flex justify-between items-center">
-                    <div id="progress" class="text-sm font-medium text-gray-600"></div>
-                    <button id="back-to-settings-btn" class="text-sm text-indigo-600 hover:underline">設定に戻る</button>
-                </div>
+                <div id="game-screen" class="hidden game-container">
+                    <div class="game-content">
+                        <div class="game-header flex justify-between items-center">
+                            <div id="progress" class="text-sm font-medium text-gray-600"></div>
+                            <button id="back-to-settings-btn"
+                                class="text-sm text-indigo-600 hover:underline">設定に戻る</button>
+                        </div>
 
-                <div class="card-area">
-                    <div id="card-container" class="card-container">
-                        <div id="card-inner" class="card-inner">
-                            <div id="card-front" class="card-front bg-white shadow-xl">
-                                <p id="definition" class="text-base md:text-lg font-semibold p-3 text-center"></p>
+                        <div class="card-area">
+                            <div id="card-container" class="card-container">
+                                <div id="card-inner" class="card-inner">
+                                    <div id="card-front" class="card-front bg-white shadow-xl">
+                                        <p id="definition" class="text-base md:text-lg font-semibold p-3 text-center">
+                                        </p>
+                                    </div>
+                                    <div id="card-back" class="card-back bg-indigo-500 text-white shadow-xl">
+                                        <p id="word" class="text-xl md:text-2xl font-bold p-3 text-center"></p>
+                                    </div>
+                                </div>
                             </div>
-                            <div id="card-back" class="card-back bg-indigo-500 text-white shadow-xl">
-                                <p id="word" class="text-xl md:text-2xl font-bold p-3 text-center"></p>
+                        </div>
+
+                        <div class="input-area space-y-3">
+                            <div class="relative">
+                                <input type="text" id="answer-input" placeholder="英単語を入力" autocomplete="off"
+                                    autocorrect="off" autocapitalize="off" spellcheck="false"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-300">
+                                <p id="feedback-message"
+                                    class="absolute right-4 top-1/2 -translate-y-1/2 font-bold text-sm"></p>
                             </div>
+                            <button id="check-btn"
+                                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">回答する</button>
+                            <button id="next-btn"
+                                class="hidden w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">次へ</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="input-area space-y-3">
-                    <div class="relative">
-                        <input type="text" id="answer-input" placeholder="英単語を入力" autocomplete="off" autocorrect="off"
-                            autocapitalize="off" spellcheck="false"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-300">
-                        <p id="feedback-message" class="absolute right-4 top-1/2 -translate-y-1/2 font-bold text-sm"></p>
+                <div id="results-screen" class="hidden results-screen bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-center mb-4">学習結果</h2>
+                    <div class="flex justify-around text-center my-6">
+                        <div>
+                            <p class="text-3xl font-bold text-emerald-500" id="correct-count"></p>
+                            <p class="text-sm text-gray-600">正解</p>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-bold text-rose-500" id="incorrect-count"></p>
+                            <p class="text-sm text-gray-600">不正解</p>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-bold text-indigo-600" id="accuracy-rate"></p>
+                            <p class="text-sm text-gray-600">正解率</p>
+                        </div>
                     </div>
-                    <button id="check-btn"
-                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">回答する</button>
-                    <button id="next-btn"
-                        class="hidden w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">次へ</button>
+                    <div id="mistakes-container" class="mt-6">
+                        <h3 class="text-lg font-semibold mb-2">間違えた単語</h3>
+                        <div id="mistakes-list" class="max-h-60 overflow-y-auto space-y-3 bg-gray-50 p-3 rounded-lg">
+
+                        </div>
+                    </div>
+                    <div class="mt-8 space-y-3">
+                        <button id="retry-btn"
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">同じ範囲で再挑戦</button>
+                        <button id="retry-mistakes-btn"
+                            class="hidden w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">間違えた問題だけ再挑戦</button>
+                        <button id="new-game-btn"
+                            class="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">新しい範囲で学習</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div id="results-screen" class="hidden results-screen bg-white p-6 md:p-8 rounded-xl shadow-lg">
-            <h2 class="text-2xl font-bold text-center mb-4">学習結果</h2>
-            <div class="flex justify-around text-center my-6">
-                <div>
-                    <p class="text-3xl font-bold text-emerald-500" id="correct-count"></p>
-                    <p class="text-sm text-gray-600">正解</p>
-                </div>
-                <div>
-                    <p class="text-3xl font-bold text-rose-500" id="incorrect-count"></p>
-                    <p class="text-sm text-gray-600">不正解</p>
-                </div>
-                <div>
-                    <p class="text-3xl font-bold text-indigo-600" id="accuracy-rate"></p>
-                    <p class="text-sm text-gray-600">正解率</p>
-                </div>
-            </div>
-            <div id="mistakes-container" class="mt-6">
-                <h3 class="text-lg font-semibold mb-2">間違えた単語</h3>
-                <div id="mistakes-list" class="max-h-60 overflow-y-auto space-y-3 bg-gray-50 p-3 rounded-lg">
-
-                </div>
-            </div>
-            <div class="mt-8 space-y-3">
-                <button id="retry-btn"
-                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">同じ範囲で再挑戦</button>
-                <button id="retry-mistakes-btn"
-                    class="hidden w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">間違えた問題だけ再挑戦</button>
-                <button id="new-game-btn"
-                    class="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">新しい範囲で学習</button>
-            </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="words.js"></script>
-    <script>
-        const settingsScreen = document.getElementById('settings-screen');
-        const gameScreen = document.getElementById('game-screen');
-        const resultsScreen = document.getElementById('results-screen');
-        const startBtn = document.getElementById('start-btn');
-        const startRangeInput = document.getElementById('start-range');
-        const endRangeInput = document.getElementById('end-range');
-        const shuffleToggle = document.getElementById('shuffle-toggle');
-        const errorMessage = document.getElementById('error-message');
-        const cardContainer = document.getElementById('card-container');
-        const wordEl = document.getElementById('word');
-        const definitionEl = document.getElementById('definition');
-        const progressEl = document.getElementById('progress');
-        const backToSettingsBtn = document.getElementById('back-to-settings-btn');
-        const correctCountEl = document.getElementById('correct-count');
-        const incorrectCountEl = document.getElementById('incorrect-count');
-        const accuracyRateEl = document.getElementById('accuracy-rate');
-        const mistakesListEl = document.getElementById('mistakes-list');
-        const retryBtn = document.getElementById('retry-btn');
-        const newGameBtn = document.getElementById('new-game-btn');
-        const answerInput = document.getElementById('answer-input');
-        const checkBtn = document.getElementById('check-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const feedbackMessage = document.getElementById('feedback-message');
-        const retryMistakesBtn = document.getElementById('retry-mistakes-btn');
-
-        let currentWords = [];
-        let currentIndex = 0;
-        let results = [];
-        let isShuffled = true;
-
-        // スクロール完全無効化
-        function preventScroll(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-        }
-
-        function disableScroll() {
-            document.addEventListener('wheel', preventScroll, { passive: false });
-            document.addEventListener('touchmove', preventScroll, { passive: false });
-            document.addEventListener('scroll', preventScroll, { passive: false });
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden';
-        }
-
-        // ビューポート高さの動的調整
-        function setViewportHeight() {
-            // 100vh の代わりに実際のビューポート高さを使用
-            const vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-            
-            // 各コンテナの高さを明示的に設定
-            const appContainer = document.getElementById('app-container');
+        <script src="words.js"></script>
+        <script>
+            const settingsScreen = document.getElementById('settings-screen');
             const gameScreen = document.getElementById('game-screen');
-            
-            if (appContainer) {
-                appContainer.style.height = `${window.innerHeight}px`;
-            }
-            if (gameScreen && !gameScreen.classList.contains('hidden')) {
-                gameScreen.style.height = `${window.innerHeight}px`;
-            }
-        }
+            const resultsScreen = document.getElementById('results-screen');
+            const startBtn = document.getElementById('start-btn');
+            const startRangeInput = document.getElementById('start-range');
+            const endRangeInput = document.getElementById('end-range');
+            const shuffleToggle = document.getElementById('shuffle-toggle');
+            const errorMessage = document.getElementById('error-message');
+            const cardContainer = document.getElementById('card-container');
+            const wordEl = document.getElementById('word');
+            const definitionEl = document.getElementById('definition');
+            const progressEl = document.getElementById('progress');
+            const backToSettingsBtn = document.getElementById('back-to-settings-btn');
+            const correctCountEl = document.getElementById('correct-count');
+            const incorrectCountEl = document.getElementById('incorrect-count');
+            const accuracyRateEl = document.getElementById('accuracy-rate');
+            const mistakesListEl = document.getElementById('mistakes-list');
+            const retryBtn = document.getElementById('retry-btn');
+            const newGameBtn = document.getElementById('new-game-btn');
+            const answerInput = document.getElementById('answer-input');
+            const checkBtn = document.getElementById('check-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const feedbackMessage = document.getElementById('feedback-message');
+            const retryMistakesBtn = document.getElementById('retry-mistakes-btn');
 
-        // キーボード表示検知と対応
-        let initialViewportHeight = window.innerHeight;
-        
-        function handleViewportChange() {
-            const currentHeight = window.innerHeight;
-            const heightDifference = initialViewportHeight - currentHeight;
-            
-            // キーボードが表示されている場合（高さが大幅に減少）
-            if (heightDifference > 150) {
-                document.body.classList.add('keyboard-visible');
-                // ゲーム画面の場合、さらに小さく調整
+            let currentWords = [];
+            let currentIndex = 0;
+            let results = [];
+            let isShuffled = true;
+
+            function preventScroll(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+
+            function disableScroll() {
+                document.addEventListener('wheel', preventScroll, { passive: false });
+                document.addEventListener('touchmove', preventScroll, { passive: false });
+                document.addEventListener('scroll', preventScroll, { passive: false });
+                document.body.style.overflow = 'hidden';
+                document.documentElement.style.overflow = 'hidden';
+            }
+
+            function setViewportHeight() {
+                const vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+                const appContainer = document.getElementById('app-container');
                 const gameScreen = document.getElementById('game-screen');
-                if (gameScreen && !gameScreen.classList.contains('hidden')) {
-                    gameScreen.style.height = `${currentHeight}px`;
+
+                if (appContainer) {
+                    appContainer.style.height = `${window.innerHeight}px`;
                 }
-            } else {
-                document.body.classList.remove('keyboard-visible');
+                if (gameScreen && !gameScreen.classList.contains('hidden')) {
+                    gameScreen.style.height = `${window.innerHeight}px`;
+                }
             }
-            
+
+            let initialViewportHeight = window.innerHeight;
+
+            function handleViewportChange() {
+                const currentHeight = window.innerHeight;
+                const heightDifference = initialViewportHeight - currentHeight;
+
+                if (heightDifference > 150) {
+                    document.body.classList.add('keyboard-visible');
+                    const gameScreen = document.getElementById('game-screen');
+                    if (gameScreen && !gameScreen.classList.contains('hidden')) {
+                        gameScreen.style.height = `${currentHeight}px`;
+                    }
+                } else {
+                    document.body.classList.remove('keyboard-visible');
+                }
+
+                setViewportHeight();
+            }
+
+            window.addEventListener('resize', handleViewportChange);
+            window.addEventListener('orientationchange', () => {
+                setTimeout(() => {
+                    initialViewportHeight = window.innerHeight;
+                    handleViewportChange();
+                }, 100);
+            });
+
+            disableScroll();
             setViewportHeight();
-        }
 
-        // イベントリスナーの設定
-        window.addEventListener('resize', handleViewportChange);
-        window.addEventListener('orientationchange', () => {
-            setTimeout(() => {
-                initialViewportHeight = window.innerHeight;
-                handleViewportChange();
-            }, 100);
-        });
+            document.addEventListener('touchstart', (e) => {
+                if (!e.target.matches('input, button, select, textarea')) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
 
-        // 初期化
-        disableScroll();
-        setViewportHeight();
-        
-        // タッチデバイスでのスクロール防止を強化
-        document.addEventListener('touchstart', (e) => {
-            // 入力フィールド以外でのタッチでスクロールを防止
-            if (!e.target.matches('input, button, select, textarea')) {
-                e.preventDefault();
-            }
-        }, { passive: false });
+            document.addEventListener('touchend', (e) => {
+                if (!e.target.matches('input, button, select, textarea')) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
 
-        document.addEventListener('touchend', (e) => {
-            if (!e.target.matches('input, button, select, textarea')) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-
-        function initializeApp() {
-            endRangeInput.max = allWords.length;
-            endRangeInput.value = allWords.length;
-            startRangeInput.max = allWords.length;
-        }
-
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        function startGame() {
-            const start = parseInt(startRangeInput.value);
-            const end = parseInt(endRangeInput.value);
-            isShuffled = shuffleToggle.checked;
-
-            errorMessage.textContent = '';
-            if (isNaN(start) || isNaN(end) || start < 1 || end > allWords.length || start > end) {
-                errorMessage.textContent = '有効な範囲を入力してください。';
-                return;
+            function initializeApp() {
+                endRangeInput.max = allWords.length;
+                endRangeInput.value = allWords.length;
+                startRangeInput.max = allWords.length;
             }
 
-            let selectedWords = allWords.slice(start - 1, end);
-            currentWords = isShuffled ? shuffleArray([...selectedWords]) : selectedWords;
-            currentIndex = 0;
-            results = [];
-
-            settingsScreen.classList.add('hidden');
-            resultsScreen.classList.add('hidden');
-            gameScreen.classList.remove('hidden');
-
-            displayCurrentWord();
-        }
-
-        function displayCurrentWord() {
-            if (currentIndex >= currentWords.length) {
-                showResults();
-                return;
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
             }
 
-            cardContainer.classList.remove('flipped');
+            function startGame() {
+                const start = parseInt(startRangeInput.value);
+                const end = parseInt(endRangeInput.value);
+                isShuffled = shuffleToggle.checked;
 
-            setTimeout(() => {
-                const current = currentWords[currentIndex];
-                definitionEl.textContent = current.definition;
-                wordEl.textContent = current.word;
-                progressEl.textContent = `${currentIndex + 1} / ${currentWords.length}`;
+                errorMessage.textContent = '';
+                if (isNaN(start) || isNaN(end) || start < 1 || end > allWords.length || start > end) {
+                    errorMessage.textContent = '有効な範囲を入力してください。';
+                    return;
+                }
 
+                let selectedWords = allWords.slice(start - 1, end);
+                currentWords = isShuffled ? shuffleArray([...selectedWords]) : selectedWords;
+                currentIndex = 0;
+                results = [];
 
-                answerInput.value = '';
-                answerInput.disabled = false;
-                answerInput.className = 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-300';
-                feedbackMessage.textContent = '';
-                checkBtn.classList.remove('hidden');
-                nextBtn.classList.add('hidden');
-                answerInput.focus();
-            }, 300);
-        }
+                settingsScreen.classList.add('hidden');
+                resultsScreen.classList.add('hidden');
+                gameScreen.classList.remove('hidden');
 
-        function checkAnswer() {
-            const userAnswer = answerInput.value.trim();
-            const correctAnswer = currentWords[currentIndex].word;
-            const isCorrect = userAnswer === correctAnswer;
-
-            answerInput.disabled = true;
-            checkBtn.classList.add('hidden');
-            nextBtn.classList.remove('hidden');
-
-            if (isCorrect) {
-                answerInput.className = 'w-full px-4 py-3 border border-emerald-500 bg-emerald-50 rounded-lg focus:outline-none ring-2 ring-emerald-500 transition-colors duration-300';
-                feedbackMessage.textContent = '正解！';
-                feedbackMessage.className = 'absolute right-4 top-1/2 -translate-y-1/2 font-bold text-lg text-emerald-500';
-            } else {
-                answerInput.className = 'w-full px-4 py-3 border border-rose-500 bg-rose-50 rounded-lg focus:outline-none ring-2 ring-rose-500 transition-colors duration-300';
-                feedbackMessage.textContent = '不正解';
-                feedbackMessage.className = 'absolute right-4 top-1/2 -translate-y-1/2 font-bold text-lg text-rose-500';
+                displayCurrentWord();
             }
 
-            cardContainer.classList.add('flipped');
-            results.push({ ...currentWords[currentIndex], correct: isCorrect, userAnswer: userAnswer });
-            nextBtn.focus();
-        }
+            function displayCurrentWord() {
+                if (currentIndex >= currentWords.length) {
+                    showResults();
+                    return;
+                }
 
-        function goToNext() {
-            currentIndex++;
-            displayCurrentWord();
-        }
+                cardContainer.classList.remove('flipped');
 
-        function retryMistakes() {
-            const mistakes = results.filter(r => !r.correct);
-            if (mistakes.length === 0) return;
+                setTimeout(() => {
+                    const current = currentWords[currentIndex];
+                    definitionEl.textContent = current.definition;
+                    wordEl.textContent = current.word;
+                    progressEl.textContent = `${currentIndex + 1} / ${currentWords.length}`;
 
 
-            const mistakeWords = mistakes.map(({ word, definition }) => ({ word, definition }));
+                    answerInput.value = '';
+                    answerInput.disabled = false;
+                    answerInput.className = 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-300';
+                    feedbackMessage.textContent = '';
+                    checkBtn.classList.remove('hidden');
+                    nextBtn.classList.add('hidden');
+                    answerInput.focus();
+                }, 300);
+            }
 
-            currentWords = isShuffled ? shuffleArray(mistakeWords) : mistakeWords;
-            currentIndex = 0;
-            results = [];
+            function checkAnswer() {
+                const userAnswer = answerInput.value.trim();
+                const correctAnswer = currentWords[currentIndex].word;
+                const isCorrect = userAnswer === correctAnswer;
 
-            resultsScreen.classList.add('hidden');
-            gameScreen.classList.remove('hidden');
-            displayCurrentWord();
-        }
+                answerInput.disabled = true;
+                checkBtn.classList.add('hidden');
+                nextBtn.classList.remove('hidden');
 
-        function showResults() {
-            gameScreen.classList.add('hidden');
-            resultsScreen.classList.remove('hidden');
+                if (isCorrect) {
+                    answerInput.className = 'w-full px-4 py-3 border border-emerald-500 bg-emerald-50 rounded-lg focus:outline-none ring-2 ring-emerald-500 transition-colors duration-300';
+                    feedbackMessage.textContent = '正解！';
+                    feedbackMessage.className = 'absolute right-4 top-1/2 -translate-y-1/2 font-bold text-lg text-emerald-500';
+                } else {
+                    answerInput.className = 'w-full px-4 py-3 border border-rose-500 bg-rose-50 rounded-lg focus:outline-none ring-2 ring-rose-500 transition-colors duration-300';
+                    feedbackMessage.textContent = '不正解';
+                    feedbackMessage.className = 'absolute right-4 top-1/2 -translate-y-1/2 font-bold text-lg text-rose-500';
+                }
 
-            const correct = results.filter(r => r.correct).length;
-            const incorrect = results.length - correct;
-            const accuracy = results.length > 0 ? Math.round((correct / results.length) * 100) : 0;
+                cardContainer.classList.add('flipped');
+                results.push({ ...currentWords[currentIndex], correct: isCorrect, userAnswer: userAnswer });
+                nextBtn.focus();
+            }
 
-            correctCountEl.textContent = correct;
-            incorrectCountEl.textContent = incorrect;
-            accuracyRateEl.textContent = `${accuracy}%`;
+            function goToNext() {
+                currentIndex++;
+                displayCurrentWord();
+            }
 
-            mistakesListEl.innerHTML = '';
-            const mistakes = results.filter(r => !r.correct);
+            function retryMistakes() {
+                const mistakes = results.filter(r => !r.correct);
+                if (mistakes.length === 0) return;
 
-            if (mistakes.length === 0) {
-                mistakesListEl.innerHTML = '<p class="text-gray-500 text-sm">間違えた単語はありません。素晴らしい！</p>';
-                retryMistakesBtn.classList.add('hidden');
-            } else {
-                retryMistakesBtn.classList.remove('hidden');
-                mistakes.forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'bg-white p-4 rounded-lg border border-gray-200 space-y-2';
-                    div.innerHTML = `
+
+                const mistakeWords = mistakes.map(({ word, definition }) => ({ word, definition }));
+
+                currentWords = isShuffled ? shuffleArray(mistakeWords) : mistakeWords;
+                currentIndex = 0;
+                results = [];
+
+                resultsScreen.classList.add('hidden');
+                gameScreen.classList.remove('hidden');
+                displayCurrentWord();
+            }
+
+            function showResults() {
+                gameScreen.classList.add('hidden');
+                resultsScreen.classList.remove('hidden');
+
+                const correct = results.filter(r => r.correct).length;
+                const incorrect = results.length - correct;
+                const accuracy = results.length > 0 ? Math.round((correct / results.length) * 100) : 0;
+
+                correctCountEl.textContent = correct;
+                incorrectCountEl.textContent = incorrect;
+                accuracyRateEl.textContent = `${accuracy}%`;
+
+                mistakesListEl.innerHTML = '';
+                const mistakes = results.filter(r => !r.correct);
+
+                if (mistakes.length === 0) {
+                    mistakesListEl.innerHTML = '<p class="text-gray-500 text-sm">間違えた単語はありません。素晴らしい！</p>';
+                    retryMistakesBtn.classList.add('hidden');
+                } else {
+                    retryMistakesBtn.classList.remove('hidden');
+                    mistakes.forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = 'bg-white p-4 rounded-lg border border-gray-200 space-y-2';
+                        div.innerHTML = `
                         <div class="border-b border-gray-100 pb-2">
                             <p class="font-semibold text-gray-800 text-lg">${item.definition}</p>
                         </div>
@@ -586,40 +571,40 @@
                             </div>
                         </div>
                     `;
-                    mistakesListEl.appendChild(div);
-                });
+                        mistakesListEl.appendChild(div);
+                    });
+                }
             }
-        }
 
-        function goBackToSettings() {
-            gameScreen.classList.add('hidden');
-            resultsScreen.classList.add('hidden');
-            settingsScreen.classList.remove('hidden');
-        }
-
-        startBtn.addEventListener('click', startGame);
-        checkBtn.addEventListener('click', checkAnswer);
-        nextBtn.addEventListener('click', goToNext);
-        answerInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !checkBtn.classList.contains('hidden')) {
-                e.preventDefault();
-                checkAnswer();
+            function goBackToSettings() {
+                gameScreen.classList.add('hidden');
+                resultsScreen.classList.add('hidden');
+                settingsScreen.classList.remove('hidden');
             }
-        });
-        document.body.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !nextBtn.classList.contains('hidden')) {
-                e.preventDefault();
-                goToNext();
-            }
-        });
 
-        backToSettingsBtn.addEventListener('click', goBackToSettings);
-        retryBtn.addEventListener('click', startGame);
-        retryMistakesBtn.addEventListener('click', retryMistakes);
-        newGameBtn.addEventListener('click', goBackToSettings);
+            startBtn.addEventListener('click', startGame);
+            checkBtn.addEventListener('click', checkAnswer);
+            nextBtn.addEventListener('click', goToNext);
+            answerInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !checkBtn.classList.contains('hidden')) {
+                    e.preventDefault();
+                    checkAnswer();
+                }
+            });
+            document.body.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !nextBtn.classList.contains('hidden')) {
+                    e.preventDefault();
+                    goToNext();
+                }
+            });
 
-        initializeApp();
-    </script>
+            backToSettingsBtn.addEventListener('click', goBackToSettings);
+            retryBtn.addEventListener('click', startGame);
+            retryMistakesBtn.addEventListener('click', retryMistakes);
+            newGameBtn.addEventListener('click', goBackToSettings);
+
+            initializeApp();
+        </script>
 </body>
 
 </html>
