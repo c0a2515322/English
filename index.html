@@ -25,8 +25,6 @@
             position: fixed;
             width: 100%;
             height: 100%;
-            -webkit-user-select: none;
-            user-select: none;
         }
 
         .mobile-viewport {
@@ -126,6 +124,13 @@
             justify-content: center;
             align-items: center;
             border-radius: 0.75rem;
+        }
+
+        .card-front p,
+        .card-back p {
+            -webkit-user-select: text;
+            user-select: text;
+            cursor: text;
         }
 
         .card-back {
@@ -234,14 +239,18 @@
                             <input type="number" id="end-range" value="35" min="1"
                                 class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                         </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm font-medium text-gray-700">順番をシャッフルする</span>
-                            <label for="shuffle-toggle" class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="shuffle-toggle" class="sr-only peer">
-                                <div
-                                    class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-indigo-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600">
-                                </div>
-                            </label>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">順番をシャッフルする</label>
+                            <div class="flex gap-2">
+                                <button type="button" id="shuffle-off-btn"
+                                    class="flex-1 px-4 py-2 border-2 border-indigo-600 bg-indigo-600 text-white rounded-md font-medium transition-colors">
+                                    しない
+                                </button>
+                                <button type="button" id="shuffle-on-btn"
+                                    class="flex-1 px-4 py-2 border-2 border-gray-300 bg-white text-gray-700 rounded-md font-medium transition-colors">
+                                    する
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="mt-8">
@@ -333,7 +342,8 @@
             const startBtn = document.getElementById('start-btn');
             const startRangeInput = document.getElementById('start-range');
             const endRangeInput = document.getElementById('end-range');
-            const shuffleToggle = document.getElementById('shuffle-toggle');
+            const shuffleOffBtn = document.getElementById('shuffle-off-btn');
+            const shuffleOnBtn = document.getElementById('shuffle-on-btn');
             const errorMessage = document.getElementById('error-message');
             const cardContainer = document.getElementById('card-container');
             const wordEl = document.getElementById('word');
@@ -355,7 +365,20 @@
             let currentWords = [];
             let currentIndex = 0;
             let results = [];
-            let isShuffled = true;
+            let isShuffled = false;
+
+            // Shuffle button handlers
+            shuffleOffBtn.addEventListener('click', () => {
+                isShuffled = false;
+                shuffleOffBtn.className = 'flex-1 px-4 py-2 border-2 border-indigo-600 bg-indigo-600 text-white rounded-md font-medium transition-colors';
+                shuffleOnBtn.className = 'flex-1 px-4 py-2 border-2 border-gray-300 bg-white text-gray-700 rounded-md font-medium transition-colors';
+            });
+
+            shuffleOnBtn.addEventListener('click', () => {
+                isShuffled = true;
+                shuffleOffBtn.className = 'flex-1 px-4 py-2 border-2 border-gray-300 bg-white text-gray-700 rounded-md font-medium transition-colors';
+                shuffleOnBtn.className = 'flex-1 px-4 py-2 border-2 border-indigo-600 bg-indigo-600 text-white rounded-md font-medium transition-colors';
+            });
 
             function preventScroll(e) {
                 e.preventDefault();
@@ -445,7 +468,6 @@
             function startGame() {
                 const start = parseInt(startRangeInput.value);
                 const end = parseInt(endRangeInput.value);
-                isShuffled = shuffleToggle.checked;
 
                 errorMessage.textContent = '';
                 if (isNaN(start) || isNaN(end) || start < 1 || end > allWords.length || start > end) {
@@ -478,7 +500,6 @@
                     definitionEl.textContent = current.definition;
                     wordEl.textContent = current.word;
                     progressEl.textContent = `${currentIndex + 1} / ${currentWords.length}`;
-
 
                     answerInput.value = '';
                     answerInput.disabled = false;
