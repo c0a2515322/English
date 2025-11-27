@@ -607,15 +607,13 @@
             checkBtn.addEventListener('click', checkAnswer);
             nextBtn.addEventListener('click', goToNext);
             answerInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && !checkBtn.classList.contains('hidden')) {
+                if (e.key === 'Enter') {
                     e.preventDefault();
-                    checkAnswer();
-                }
-            });
-            document.body.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && !nextBtn.classList.contains('hidden')) {
-                    e.preventDefault();
-                    goToNext();
+                    if (!checkBtn.classList.contains('hidden')) {
+                        checkAnswer();
+                    } else if (!nextBtn.classList.contains('hidden')) {
+                        goToNext();
+                    }
                 }
             });
 
